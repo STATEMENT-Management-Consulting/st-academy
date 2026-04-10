@@ -4,9 +4,16 @@ import Link from "next/link";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import Logo from "./Logo";
+import { usePathname } from "next/navigation";
 
 export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
+
+  // Não mostrar navigation em /admin
+  if (pathname.startsWith("/admin")) {
+    return null;
+  }
 
   return (
     <nav className="fixed w-full top-0 z-50 bg-white border-b border-gray-200">
