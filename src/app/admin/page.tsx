@@ -144,10 +144,10 @@ export default function AdminPage() {
   const pastEvents = events.filter((e) => e.type === "past");
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-24">
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-12">
+    <div className="py-12">
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
         <div className="mb-8 flex justify-between items-center">
-          <h1 className="text-5xl font-light text-black">Painel de Administração</h1>
+          <h2 className="text-3xl font-light text-black">Eventos</h2>
           <div className="flex gap-4">
             <Link
               href="/admin/inscricoes"
