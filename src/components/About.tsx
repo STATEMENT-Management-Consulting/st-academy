@@ -5,39 +5,39 @@ export default function About() {
     <section id="about" className="py-20 px-6 sm:px-8 lg:px-12 bg-white">
       <div className="max-w-full mx-auto">
         <div className="mb-16">
-          <h2 className="text-5xl md:text-6xl font-light text-black mb-6">Sobre Statement Academy</h2>
+          <h2 className="text-5xl md:text-6xl font-light text-black mb-6">Sobre S.T.A.C ACADEMY</h2>
           <p className="text-base text-gray-600 max-w-3xl font-light leading-relaxed">
-            Somos uma instituição dedicada a preparar profissionais para os desafios do século XXI com educação de qualidade e inovação contínua.
+            Com mais de cinco anos de solidez no sector educacional angolano, a S.T.A.C ACADEMY consolida-se como uma referência em formação técnica de alta performance, comprometida em entregar um ensino de excelência que une rigor técnico e agilidade.
+          </p>
+          <p className="text-base text-gray-600 max-w-3xl font-light leading-relaxed mt-4">
+            Sob a visão estratégica do nosso gerente, o Sr. Aristides Chalo, a academia nasceu com a missão clara de preencher a lacuna entre a teoria acadêmica e as exigências reais do mercado de trabalho. Oferecemos uma alternativa viável, prática e acelerada à formação universitária tradicional.
+          </p>
+          <p className="text-base text-gray-600 max-w-3xl font-light leading-relaxed mt-4">
+            A nossa metodologia foca na imersão total. Ao escolher a S.T.A.C ACADEMY, o formando mergulha em centenas de horas de prática intensiva, dominando as técnicas mais avançadas da sua área.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-20 mb-20">
-          <div>
-            <h3 className="text-3xl font-light text-black mb-6">Nossa Missão</h3>
-            <p className="text-base text-gray-600 font-light leading-relaxed">
-              Transformar vidas através de educação profissional de qualidade, preparando indivíduos para carreiras bem-sucedidas e significativas na era digital.
-            </p>
-          </div>
-          <div>
-            <h3 className="text-3xl font-light text-black mb-6">Nossa Visão</h3>
-            <p className="text-base text-gray-600 font-light leading-relaxed">
-              Ser reconhecida como a instituição líder em educação profissional, formando profissionais éticos, competentes e inovadores que transformam positivamente suas comunidades.
-            </p>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-3 gap-8">
-          <div className="border-t border-gray-200 pt-8">
-            <div className="text-3xl font-light text-black mb-2">5K+</div>
-            <p className="text-sm text-gray-600 font-light">Alunos Formados</p>
-          </div>
-          <div className="border-t border-gray-200 pt-8">
-            <div className="text-3xl font-light text-black mb-2">98%</div>
-            <p className="text-sm text-gray-600 font-light">Taxa de Satisfação</p>
-          </div>
-          <div className="border-t border-gray-200 pt-8">
-            <div className="text-3xl font-light text-black mb-2">50+</div>
-            <p className="text-sm text-gray-600 font-light">Especialistas</p>
+        <div className="mb-20">
+          <h2 className="text-4xl md:text-5xl font-light text-black mb-12">Nossos Serviços</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+            <div>
+              <h3 className="text-2xl font-light text-black mb-4">Diagnóstico Estratégico de Competências</h3>
+              <p className="text-base text-gray-600 font-light leading-relaxed">
+                Serviço de consultoria técnica de imersão na cultura e nos processos das instituições/empresas. O objectivo não é apenas identificar "o que os colaboradores querem aprender", mas sim descobrir quais lacunas técnicas e comportamentais estão impedindo as instituições de atingir metas previamente definidas.
+              </p>
+            </div>
+            <div>
+              <h3 className="text-2xl font-light text-black mb-4">Formação</h3>
+              <p className="text-base text-gray-600 font-light leading-relaxed">
+                Processo estratégico e contínuo de desenvolvimento de competências (conhecimentos, habilidades e atitudes) alinhado aos objectivos de negócio de uma organização.
+              </p>
+            </div>
+            <div>
+              <h3 className="text-2xl font-light text-black mb-4">Programa de Avaliação de Competências</h3>
+              <p className="text-base text-gray-600 font-light leading-relaxed">
+                Processo estruturado utilizado para medir o gap entre as capacidades atuais de um colaborador e as exigências do cargo ou os objetivos estratégicos da empresa.
+              </p>
+            </div>
           </div>
         </div>
       </div>

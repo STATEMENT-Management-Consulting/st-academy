@@ -5,10 +5,12 @@ import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import Logo from "./Logo";
 import { usePathname } from "next/navigation";
+import { useContactModal } from "@/contexts/ContactModalContext";
 
 export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
+  const { openContactModal } = useContactModal();
 
   // Não mostrar navigation em /admin
   if (pathname.startsWith("/admin")) {
@@ -23,19 +25,13 @@ export default function Navigation() {
             <Logo />
           </Link>
 
-          <div className="hidden md:flex items-center space-x-16">
-            <a href="#programs" className="text-gray-700 hover:text-black transition-colors font-light text-xs tracking-widest">
-              PROGRAMAS
-            </a>
-            <a href="#about" className="text-gray-700 hover:text-black transition-colors font-light text-xs tracking-widest">
-              SOBRE
-            </a>
-            <a href="#team" className="text-gray-700 hover:text-black transition-colors font-light text-xs tracking-widest">
-              INSTRUTORES
-            </a>
-            <a href="#contact" className="text-gray-700 hover:text-black transition-colors font-light text-xs tracking-widest">
-              CONTATO
-            </a>
+          <div className="hidden md:flex items-center space-x-8">
+            <button
+              onClick={openContactModal}
+              className="bg-black hover:bg-gray-900 text-white px-6 py-2 text-xs font-light tracking-widest transition-colors rounded cursor-pointer"
+            >
+              CONTACTE-JÁ
+            </button>
           </div>
 
           <button className="md:hidden" onClick={() => setIsOpen(!isOpen)}>
@@ -45,18 +41,15 @@ export default function Navigation() {
 
         {isOpen && (
           <div className="md:hidden pb-6 border-t border-gray-200">
-            <a href="#programs" className="block py-3 text-gray-700 hover:text-black font-light text-xs tracking-widest">
-              PROGRAMAS
-            </a>
-            <a href="#about" className="block py-3 text-gray-700 hover:text-black font-light text-xs tracking-widest">
-              SOBRE
-            </a>
-            <a href="#team" className="block py-3 text-gray-700 hover:text-black font-light text-xs tracking-widest">
-              INSTRUTORES
-            </a>
-            <a href="#contact" className="block py-3 text-gray-700 hover:text-black font-light text-xs tracking-widest">
-              CONTATO
-            </a>
+            <button
+              onClick={() => {
+                openContactModal();
+                setIsOpen(false);
+              }}
+              className="block w-full py-3 px-4 bg-black hover:bg-gray-900 text-white font-light text-xs tracking-widest rounded text-left"
+            >
+              CONTACTE-JÁ
+            </button>
           </div>
         )}
       </div>

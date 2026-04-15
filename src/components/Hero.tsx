@@ -1,8 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight, X, Loader } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { supabase } from "@/lib/supabase";
+import { useContactModal } from "@/contexts/ContactModalContext";
+import { useEventModal } from "@/contexts/EventModalContext";
 
 interface Event {
   id: string;
@@ -23,13 +25,9 @@ export default function Hero() {
   const [EVENTS, setEVENTS] = useState<Event[]>([]);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [autoPlay, setAutoPlay] = useState(true);
-  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
   const [loading, setLoading] = useState(true);
-  
-  // Form states
-  const [formData, setFormData] = useState({ name: "", email: "", phone: "" });
-  const [submitting, setSubmitting] = useState(false);
-  const [submitMessage, setSubmitMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
+  const { openContactModal } = useContactModal();
+  const { openEventModal } = useEventModal();
 
   // Carregar eventos do Supabase
   useEffect(() => {
@@ -80,51 +78,11 @@ export default function Hero() {
     setAutoPlay(false);
   };
 
-  const handleRegistration = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!selectedEvent || !formData.name || !formData.email || !formData.phone) {
-      setSubmitMessage({ type: "error", text: "Por favor, preencha todos os campos" });
-      return;
-    }
-
-    try {
-      setSubmitting(true);
-      const { error } = await supabase
-        .from("registrations")
-        .insert([
-          {
-            event_id: selectedEvent.id,
-            name: formData.name,
-            email: formData.email,
-            phone: formData.phone,
-          },
-        ]);
-
-      if (error) {
-        console.error("Erro ao salvar inscrição:", error);
-        setSubmitMessage({ type: "error", text: "Erro ao salvar inscrição. Tente novamente." });
-      } else {
-        setSubmitMessage({ type: "success", text: "Inscrição realizada com sucesso! 🎉" });
-        setFormData({ name: "", email: "", phone: "" });
-        setTimeout(() => {
-          setSelectedEvent(null);
-          setSubmitMessage(null);
-        }, 2000);
-      }
-    } catch (error) {
-      console.error("Erro:", error);
-      setSubmitMessage({ type: "error", text: "Erro ao conectar com o servidor." });
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
   // Se carregando ou sem eventos, mostrar placeholder
   if (loading) {
     return (
       <section className="relative pt-32 pb-20 px-6 sm:px-8 lg:px-12 bg-white overflow-hidden min-h-125 flex items-center justify-center">
-        <Loader className="animate-spin text-gray-400" size={32} />
+        <div className="animate-spin text-gray-400">Carregando...</div>
       </section>
     );
   }
@@ -144,11 +102,8 @@ export default function Hero() {
               </p>
               
               <div className="flex flex-col sm:flex-row gap-6">
-                <button className="bg-black hover:bg-gray-900 text-white px-10 py-4 text-xs font-light tracking-widest transition-colors">
-                  COMEÇAR AGORA
-                </button>
-                <button className="border border-gray-300 hover:border-black bg-white hover:bg-gray-50 text-black px-10 py-4 text-xs font-light tracking-widest transition-colors">
-                  VER PROGRAMAS
+                <button onClick={openContactModal} className="bg-black hover:bg-gray-900 text-white px-8 py-4 text-xs font-light tracking-widest transition-colors text-center cursor-pointer">
+                  CONTACTE-JÁ
                 </button>
               </div>
             </div>
@@ -218,11 +173,8 @@ export default function Hero() {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-6">
-              <button className="bg-black hover:bg-gray-900 text-white px-10 py-4 text-xs font-light tracking-widest transition-colors">
-                COMEÇAR AGORA
-              </button>
-              <button className="border border-gray-300 hover:border-black bg-white hover:bg-gray-50 text-black px-10 py-4 text-xs font-light tracking-widest transition-colors">
-                VER PROGRAMAS
+              <button onClick={openContactModal} className="bg-black hover:bg-gray-900 text-white px-8 py-4 text-xs font-light tracking-widest transition-colors text-center cursor-pointer">
+                CONTACTE-JÁ
               </button>
             </div>
           </div>
@@ -239,7 +191,7 @@ export default function Hero() {
                     style={{
                       backgroundImage: `url(${currentEvent.image})`,
                     }}
-                    onClick={() => setSelectedEvent(currentEvent)}
+                    onClick={() => openEventModal(currentEvent)}
                   >
                     {/* Overlay with event info */}
                     <div className="absolute inset-0 bg-linear-to-t from-black via-transparent to-transparent flex flex-col justify-end p-8 sm:p-12">
@@ -320,153 +272,6 @@ export default function Hero() {
             </button>
           ))}
         </div>
-
-        {/* Modal */}
-        {selectedEvent && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-999999 p-4">
-            <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-              {/* Header com imagem */}
-              <div className="relative h-64 overflow-hidden">
-                <img
-                  src={selectedEvent.image}
-                  alt={selectedEvent.title}
-                  className="w-full h-full object-cover"
-                />
-                <button
-                  onClick={() => setSelectedEvent(null)}
-                  className="absolute top-4 right-4 bg-white/90 hover:bg-white p-2 rounded-full transition-colors"
-                  aria-label="Fechar modal"
-                >
-                  <X size={24} />
-                </button>
-              </div>
-
-              {/* Conteúdo */}
-              <div className="p-8">
-                <h2 className="text-4xl font-light text-black mb-2">{selectedEvent.title}</h2>
-                <p className="text-gray-600 font-light mb-6">Instrutor: {selectedEvent.instructor}</p>
-
-                <div className="grid grid-cols-2 gap-6 mb-8">
-                  <div>
-                    <p className="text-sm text-gray-500 font-light mb-1">Data</p>
-                    <p className="text-lg text-black font-light">{selectedEvent.date}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-500 font-light mb-1">Horário</p>
-                    <p className="text-lg text-black font-light">{selectedEvent.time}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-500 font-light mb-1">Local</p>
-                    <p className="text-lg text-black font-light">{selectedEvent.location}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-500 font-light mb-1">Duração</p>
-                    <p className="text-lg text-black font-light">{selectedEvent.duration}</p>
-                  </div>
-                </div>
-
-                <div className="mb-8">
-                  <p className="text-sm text-gray-500 font-light mb-2">Sobre o evento</p>
-                  <p className="text-base text-gray-700 font-light leading-relaxed">{selectedEvent.description}</p>
-                </div>
-
-                <div className="grid grid-cols-3 gap-4 mb-8 p-4 bg-gray-50 rounded-lg">
-                  <div>
-                    <p className="text-sm text-gray-500 font-light">Vagas</p>
-                    <p className="text-lg text-black font-light">{selectedEvent.capacity}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-500 font-light">Preço</p>
-                    <p className="text-lg text-black font-light">{selectedEvent.price}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-500 font-light">Status</p>
-                    <p className="text-lg text-green-600 font-light">Disponível</p>
-                  </div>
-                </div>
-
-                {/* Formulário de Inscrição */}
-                <div className="mb-8 p-6 bg-gray-50 rounded-lg">
-                  <h3 className="text-lg font-light text-black mb-4">Inscrever-se neste evento</h3>
-                  
-                  <form onSubmit={handleRegistration} className="space-y-4">
-                    <div>
-                      <label className="block text-sm font-light text-gray-600 mb-2">
-                        Nome completo *
-                      </label>
-                      <input
-                        type="text"
-                        name="name"
-                        value={formData.name}
-                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        placeholder="Seu nome"
-                        className="w-full px-4 py-2 border border-gray-300 rounded font-light text-sm focus:outline-none focus:border-black"
-                        required
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-light text-gray-600 mb-2">
-                        Email *
-                      </label>
-                      <input
-                        type="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        placeholder="seu@email.com"
-                        className="w-full px-4 py-2 border border-gray-300 rounded font-light text-sm focus:outline-none focus:border-black"
-                        required
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-light text-gray-600 mb-2">
-                        Telefone *
-                      </label>
-                      <input
-                        type="tel"
-                        name="phone"
-                        value={formData.phone}
-                        onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                        placeholder="+244 923 456 789"
-                        className="w-full px-4 py-2 border border-gray-300 rounded font-light text-sm focus:outline-none focus:border-black"
-                        required
-                      />
-                    </div>
-
-                    {submitMessage && (
-                      <div
-                        className={`p-3 rounded text-sm font-light ${
-                          submitMessage.type === "success"
-                            ? "bg-green-100 text-green-700"
-                            : "bg-red-100 text-red-700"
-                        }`}
-                      >
-                        {submitMessage.text}
-                      </div>
-                    )}
-
-                    <button
-                      type="submit"
-                      disabled={submitting}
-                      className="w-full bg-black hover:bg-gray-900 disabled:bg-gray-400 text-white px-6 py-3 font-light tracking-widest transition-colors"
-                    >
-                      {submitting ? "Processando..." : "CONFIRMAR INSCRIÇÃO"}
-                    </button>
-                  </form>
-                </div>
-
-                <button
-                  onClick={() => setSelectedEvent(null)}
-                  className="w-full border border-gray-300 hover:border-black text-black px-6 py-3 font-light tracking-widest transition-colors"
-                >
-                  FECHAR
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
     </section>
   );
