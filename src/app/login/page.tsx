@@ -36,7 +36,7 @@ function LoginForm() {
 
   const registeredMessage = useMemo(() => {
     return searchParams.get("registered") === "true"
-      ? "Conta criada com sucesso! Agora faça login."
+      ? "Conta criada com sucesso! Agora o seu faça login."
       : "";
   }, [searchParams]);
 
